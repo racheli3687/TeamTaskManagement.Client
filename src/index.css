@@ -1,0 +1,116 @@
+@import "tailwindcss";
+
+/* מצב כהה לפי המחלקה dark על html (נקבעת ב-index.html ובמתג התצוגה) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* tokens סמנטיים. הקומפוננטות משתמשות בשמות אלה בלבד, לא בצבעים ישירים. */
+:root {
+  color-scheme: light;
+  --canvas: #edf0f5;
+  --surface: #ffffff;
+  --surface-2: #f4f6fa;
+  --line: #d9dee7;
+  --ink: #18202e;
+  --ink-soft: #5b6577;
+  --brand: #3347d1;
+  --brand-soft: #e3e7fb;
+  --on-brand: #ffffff;
+  --marker: #f5c31b;
+  --marker-soft: #fdf0c2;
+  --done: #178a5e;
+  --done-soft: #ddf2e8;
+  --danger: #c93b3b;
+  --danger-soft: #f9e1e1;
+}
+
+.dark {
+  color-scheme: dark;
+  --canvas: #121826;
+  --surface: #1a2233;
+  --surface-2: #212b3f;
+  --line: #2e3a52;
+  --ink: #e7ebf3;
+  --ink-soft: #9aa5ba;
+  --brand: #8b98ff;
+  --brand-soft: #262f5c;
+  --on-brand: #10162a;
+  --marker: #f5c31b;
+  --marker-soft: #3d3413;
+  --done: #3cc48a;
+  --done-soft: #163a2c;
+  --danger: #f06a6a;
+  --danger-soft: #45222a;
+}
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-brand: var(--brand);
+  --color-brand-soft: var(--brand-soft);
+  --color-on-brand: var(--on-brand);
+  --color-marker: var(--marker);
+  --color-marker-soft: var(--marker-soft);
+  --color-done: var(--done);
+  --color-done-soft: var(--done-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+}
+
+@theme {
+  --font-sans: "IBM Plex Sans Hebrew", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Rubik Variable", "IBM Plex Sans Hebrew", ui-sans-serif, sans-serif;
+
+  /* הרגע המרכזי במוצר: משימה שנתפסה "מסומנת במרקר" */
+  --animate-claim: claim 1.4s ease-out;
+  --animate-dialog: dialog-in 0.18s ease-out;
+
+  @keyframes claim {
+    0% { box-shadow: 0 0 0 0 var(--marker); background-color: var(--marker-soft); }
+    35% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--marker) 45%, transparent); }
+    100% { box-shadow: 0 0 0 0 transparent; background-color: var(--surface); }
+  }
+
+  @keyframes dialog-in {
+    from { opacity: 0; transform: translateY(8px) scale(0.98); }
+    to { opacity: 1; transform: none; }
+  }
+}
+
+/* שם המחזיק במשימה: קו מרקר מתחת לטקסט */
+@utility marker-highlight {
+  background-image: linear-gradient(transparent 58%, var(--marker-soft) 58%);
+  padding-inline: 0.15em;
+}
+
+@layer base {
+  body {
+    @apply bg-canvas font-sans text-ink antialiased;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--brand);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: var(--marker-soft);
+  }
+
+  dialog::backdrop {
+    background: rgb(18 24 38 / 0.5);
+    backdrop-filter: blur(3px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
